@@ -1,0 +1,30 @@
+﻿@page
+@using FiveWCLogin.Config
+@model IndexModel
+@inject IConfigManager _config
+
+@{
+    ViewData["Title"] = "Registration";
+}
+
+<div class="text-center align-content-center h-100 align-middle">
+    <h1 class="display-4">5WC 2023 Registration Form</h1>
+    <p>Click the button below to start the registration process. You will need to 
+        login to both osu! and Discord to be registered.</p>
+    
+    <div>
+        @{
+            string osuRedirect = "http://auth.stagec.xyz/osu";
+            string osuUrl = $"https://osu.ppy.sh/oauth/authorize?client_id={_config.ClientID}" +
+                         $"&redirect_uri={osuRedirect}&response_type=code&scope=identify";
+            string discordUrl = "https://discord.com/api/oauth2/authorize?client_id=1026154530578108426&redirect_uri=http%3A%2F%2Fauth.stagec.xyz%2Fdiscord&response_type=code&scope=identify";
+            <a href=@osuUrl class="text-decoration-none">
+                <button class="btn-info btn-lg">osu!</button>
+            </a>
+            
+            <a href=@discordUrl class="text-decoration-none">
+                <button class="btn-info btn-lg">Discord</button>
+            </a>
+        }
+    </div>
+</div>
