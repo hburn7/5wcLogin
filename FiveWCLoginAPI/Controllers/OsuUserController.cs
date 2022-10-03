@@ -81,6 +81,14 @@ public class OsuUserController : ControllerBase
 	}
 
 	[HttpGet]
+	[Route("osu")]
+	public async Task<List<OsuUser>> GetAllUsers()
+	{
+		var users = await _dbContext.Users.ToListAsync();
+		return users;
+	}
+
+	[HttpGet]
 	[Route("discord/{discordId}")]
 	public async Task<OsuUser?> Get(ulong discordId)
 	{
