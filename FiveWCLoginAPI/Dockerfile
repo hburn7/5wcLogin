@@ -5,9 +5,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["FiveWCLoginAPI/FiveWCLoginAPI.csproj", "FiveWCLoginAPI/"]
+COPY . FiveWCLoginAPI/
 RUN dotnet restore "FiveWCLoginAPI/FiveWCLoginAPI.csproj"
-COPY . .
 WORKDIR "/src/FiveWCLoginAPI"
 RUN dotnet build "FiveWCLoginAPI.csproj" -c Release -o /app/build
 
