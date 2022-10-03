@@ -11,7 +11,12 @@ public class ConfigManager : IConfigManager
 	public string DbPassword => _configuration["Database:Password"];
 	public string DbName => _configuration["Database:Database"];
 
-	public string GetConnectionString() => IsDocker
-		? $"postgresql://{DbUsername}:{DbPassword}@db/{DbName}"
-		: $"postgresql://{DbUsername}:{DbPassword}@{DbHost}:{DbPort}/{DbName}";
+	public string GetConnectionString() =>
+		IsDocker
+			? $"Server=db;Database={DbName};Port={DbPort};User id={DbUsername};Password={DbPassword}"
+			: $"Server={DbHost};Database={DbName};Port={DbPort};User id={DbUsername};Password={DbPassword}";
+	
+	// public string GetConnectionString() => IsDocker
+	// 	? $"postgresql://{DbUsername}:{DbPassword}@db/{DbName}"
+	// 	: $"postgresql://{DbUsername}:{DbPassword}@{DbHost}:{DbPort}/{DbName}";
 }
