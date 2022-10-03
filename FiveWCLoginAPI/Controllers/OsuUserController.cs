@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FiveWCLoginAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api")]
 public class OsuUserController : ControllerBase
 {
 	private readonly ILogger<OsuUserController> _logger;
