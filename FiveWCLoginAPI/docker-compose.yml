@@ -1,0 +1,27 @@
+version: '3'
+
+volumes:
+  postgres-5wcapi:
+    driver: local
+  images:
+    driver: local
+
+services:
+  api:
+    image: five_wc_api:latest
+    build: .
+  db:
+    image: postgres
+    ports:
+      - "6500:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=five_wc_api
+    volumes:
+      - postgres-five_wc_api:/var/lib/postgresql/data
+
+networks:
+  default:
+    external:
+      name: five_wc_api_network
