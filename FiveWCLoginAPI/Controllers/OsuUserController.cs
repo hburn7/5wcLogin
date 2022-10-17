@@ -93,20 +93,12 @@ public class OsuUserController : ControllerBase
 	}
 
 	[HttpGet]
-	[Route("{osuId}")]
+	[Route("osu/{osuId}")]
 	public async Task<OsuUser?> Get(int osuID)
 	{
 		// call the database and return a user
 		var match = await _dbContext.Users.FirstOrDefaultAsync(x => x.OsuID == osuID);
 		return match;
-	}
-
-	[HttpGet]
-	[Route("osu")]
-	public async Task<List<OsuUser>> GetAllUsers()
-	{
-		var users = await _dbContext.Users.ToListAsync();
-		return users;
 	}
 
 	[HttpGet]
