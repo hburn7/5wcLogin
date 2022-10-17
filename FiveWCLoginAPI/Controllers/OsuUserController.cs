@@ -1,6 +1,8 @@
 using FiveWCLoginAPI.Config;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace FiveWCLoginAPI.Controllers;
 
@@ -8,6 +10,8 @@ namespace FiveWCLoginAPI.Controllers;
 [Route("api")]
 public class OsuUserController : ControllerBase
 {
+	private const string BaseUrl = "https://osu.ppy.sh/api/v2/";
+	
 	private readonly ILogger<OsuUserController> _logger;
 	private readonly FiveWCDbContext _dbContext;
 	private readonly ConfigManager _config;
@@ -66,10 +70,16 @@ public class OsuUserController : ControllerBase
 	[Route("osu")]
 	public async Task GetFromCode([FromQuery] string code)
 	{
-		_logger.LogInformation(code);
-		string baseUrl = "https://osu.ppy.sh/oauth/token";
+		_logger.LogInformation($"Authorized user. Code received: {code}");
+
+		var client = new HttpClient();
+		var url = BaseUrl + "me/osu";
+		var request = new HttpRequestMessage(HttpMethod.Get, url);
+		request.Headers.Add("Authorization", code);
 		
-		// todo: come back and request the osu api bla bla bla
+		var response = await client.SendAsync(request);
+		var user = JsonConvert.DeserializeObject<JObject>(await response.Content.ReadAsStringAsync());
+		Console.WriteLine(user);
 	}
 
 	[HttpGet]
