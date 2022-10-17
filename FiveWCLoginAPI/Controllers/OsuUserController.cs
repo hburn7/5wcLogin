@@ -63,9 +63,10 @@ public class OsuUserController : ControllerBase
 	}
 
 	[HttpPost]
-	[Route("osu/{code}")]
-	public async Task PostOsu(string code)
+	[Route("osu")]
+	public async Task GetFromCode([FromQuery] string code)
 	{
+		_logger.LogInformation(code);
 		string baseUrl = "https://osu.ppy.sh/oauth/token";
 		
 		// todo: come back and request the osu api bla bla bla

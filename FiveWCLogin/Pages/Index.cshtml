@@ -15,7 +15,7 @@
     <div>
         @{
             string osuRedirect = "http://auth.stagec.xyz/osu";
-            string osuUrl = $"https://osu.ppy.sh/oauth/authorize?client_id={_config.ClientID}" +
+            string osuUrl = $"https://osu.ppy.sh/oauth/authorize?client_id={_config.OsuClientId}" +
                          $"&redirect_uri={osuRedirect}&response_type=code&scope=identify";
             string discordUrl = "https://discord.com/api/oauth2/authorize?client_id=1026154530578108426&redirect_uri=http%3A%2F%2Fauth.stagec.xyz%2Fdiscord&response_type=code&scope=identify";
             <a href=@osuUrl class="text-decoration-none">

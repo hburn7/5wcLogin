@@ -1,7 +1,7 @@
 version: '3'
 
 volumes:
-  postgres-5wcapi:
+  postgres-five_wc_api:
     driver: local
   images:
     driver: local
@@ -10,6 +10,9 @@ services:
   api:
     image: five_wc_api:latest
     build: .
+    ports:
+      - "7161:80"
+      - "7162:443"
   db:
     image: postgres
     ports:
