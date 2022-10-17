@@ -79,7 +79,17 @@ public class OsuUserController : ControllerBase
 		
 		var response = await client.SendAsync(request);
 		var user = JsonConvert.DeserializeObject<JObject>(await response.Content.ReadAsStringAsync());
-		Console.WriteLine(user);
+
+		if (user == null)
+		{
+			_logger.LogWarning("User returned null");
+			return;
+		}
+		
+		foreach (var key in user.Properties())
+		{
+			_logger.LogInformation($"key: {key} // value: {user[key]}");
+		}
 	}
 
 	[HttpGet]
