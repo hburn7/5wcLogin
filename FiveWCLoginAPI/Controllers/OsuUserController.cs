@@ -82,7 +82,7 @@ public class OsuUserController : ControllerBase
 			{ "client_secret", _config.OsuClientSecret },
 			{ "code", code },
 			{ "grant_type", "authorization_code" },
-			{ "redirect_uri", "https://auth.stagec.xyz/api/osuauth" }
+			{ "redirect_uri", "https://auth.stagec.xyz/api/osu" }
 		};
 
 		var content = new FormUrlEncodedContent(values);
