@@ -85,10 +85,7 @@ public class OsuUserController : ControllerBase
 			return;
 		}
 		
-		foreach (var key in user.Properties())
-		{
-			_logger.LogInformation($"key: {key} // value: {user[key]}");
-		}
+		_logger.LogInformation(user.ToString());
 	}
 
 	[HttpGet]
