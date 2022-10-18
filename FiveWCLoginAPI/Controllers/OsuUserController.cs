@@ -66,7 +66,6 @@ public class OsuUserController : ControllerBase
 		
 	}
 
-	[HttpPost]
 	[Route("osu")]
 	public async Task GetFromCode([FromQuery] string code)
 	{
