@@ -66,14 +66,13 @@ public class OsuUserController : ControllerBase
 		
 	}
 
-	[HttpPost]
 	[Route("osu")]
 	public async Task GetFromCode([FromQuery] string code)
 	{
 		_logger.LogInformation($"Authorized user. Code received: {code}");
+		var url = BaseUrl + "me/osu";
 
 		var client = new HttpClient();
-		var url = BaseUrl + "me/osu";
 		var request = new HttpRequestMessage(HttpMethod.Get, url);
 		request.Headers.Add("Authorization", code);
 		
@@ -86,10 +85,7 @@ public class OsuUserController : ControllerBase
 			return;
 		}
 		
-		foreach (var key in user.Properties())
-		{
-			_logger.LogInformation($"key: {key} // value: {user[key]}");
-		}
+		_logger.LogInformation(user.ToString());
 	}
 
 	[HttpGet]
