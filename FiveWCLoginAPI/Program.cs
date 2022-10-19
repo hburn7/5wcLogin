@@ -14,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<FiveWCDbContext>();
-builder.Services.AddSingleton<IConfigManager, ConfigManager>();
+builder.Services.AddSingleton<ConfigManager>();
 builder.Services.AddSingleton<IOsuService, OsuService>();
 
 var app = builder.Build();
