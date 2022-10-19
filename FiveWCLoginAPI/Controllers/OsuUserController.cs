@@ -16,13 +16,15 @@ public class OsuUserController : ControllerBase
 	
 	private readonly ILogger<OsuUserController> _logger;
 	private readonly FiveWCDbContext _dbContext;
-	private readonly ConfigManager _config;
+	private readonly IConfigManager _config;
+	private readonly IOsuService _osuService;
 
-	public OsuUserController(ILogger<OsuUserController> logger, FiveWCDbContext dbContext, ConfigManager config)
+	public OsuUserController(ILogger<OsuUserController> logger, FiveWCDbContext dbContext, IConfigManager config, IOsuService osuService)
 	{
 		_logger = logger;
 		_dbContext = dbContext;
 		_config = config;
+		_osuService = osuService;
 	}
 	
 	[HttpPost]
@@ -72,23 +74,10 @@ public class OsuUserController : ControllerBase
 	public async Task GetTokenFromCode([FromQuery] string code)
 	{
 		_logger.LogInformation($"Authorized user. Code received: {code}");
-
-		// Exchange code for token
-		
-		var client = new HttpClient();
-		var values = new Dictionary<string, string>()
-		{
-			{ "client_id", _config.OsuClientId.ToString() },
-			{ "client_secret", _config.OsuClientSecret },
-			{ "code", code },
-			{ "grant_type", "authorization_code" },
-			{ "redirect_uri", "https://auth.stagec.xyz/api/osuauth" }
-		};
-
-		var content = new FormUrlEncodedContent(values);
-		var response = await client.PostAsync(TokenUrl, content);
-		var resString = await response.Content.ReadAsStringAsync();
-		// _logger.LogInformation(resString);
+		var token = await _osuService.ResolveTokenAsync(code);
+		var user = await _osuService.ResolveUserAsync();
+		_logger.LogInformation(token.AccessToken);
+		_logger.LogInformation(user.Id.ToString());
 	}
 
 	[Route("osuauth")]

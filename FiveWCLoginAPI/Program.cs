@@ -1,6 +1,8 @@
 using FiveWCLoginAPI;
 using FiveWCLoginAPI.Config;
 using Microsoft.EntityFrameworkCore;
+using OsuSharp;
+using OsuSharp.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<ConfigManager>();
 builder.Services.AddSingleton<FiveWCDbContext>();
+builder.Services.AddSingleton<IConfigManager, ConfigManager>();
+builder.Services.AddSingleton<IOsuService, OsuService>();
 
 var app = builder.Build();
 
