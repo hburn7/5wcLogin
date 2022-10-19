@@ -1,5 +1,6 @@
 using FiveWCLoginAPI.Config;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -11,6 +12,7 @@ namespace FiveWCLoginAPI.Controllers;
 public class OsuUserController : ControllerBase
 {
 	private const string BaseUrl = "https://osu.ppy.sh/api/v2/";
+	private const string TokenUrl = "https://osu.ppy.sh/oauth/token";
 	
 	private readonly ILogger<OsuUserController> _logger;
 	private readonly FiveWCDbContext _dbContext;
@@ -67,25 +69,32 @@ public class OsuUserController : ControllerBase
 	}
 
 	[Route("osu")]
-	public async Task GetFromCode([FromQuery] string code)
+	public async Task GetTokenFromCode([FromQuery] string code)
 	{
 		_logger.LogInformation($"Authorized user. Code received: {code}");
-		var url = BaseUrl + "me/osu";
 
+		// Exchange code for token
+		
 		var client = new HttpClient();
-		var request = new HttpRequestMessage(HttpMethod.Get, url);
-		request.Headers.Add("Authorization", code);
-		
-		var response = await client.SendAsync(request);
-		var user = JsonConvert.DeserializeObject<JObject>(await response.Content.ReadAsStringAsync());
-
-		if (user == null)
+		var values = new Dictionary<string, string>()
 		{
-			_logger.LogWarning("User returned null");
-			return;
-		}
-		
-		_logger.LogInformation(user.ToString());
+			{ "client_id", _config.OsuClientId.ToString() },
+			{ "client_secret", _config.OsuClientSecret },
+			{ "code", code },
+			{ "grant_type", "authorization_code" },
+			{ "redirect_uri", "https://auth.stagec.xyz/api/osu" }
+		};
+
+		var content = new FormUrlEncodedContent(values);
+		var response = await client.PostAsync(TokenUrl, content);
+		var resString = await response.Content.ReadAsStringAsync();
+		_logger.LogInformation(resString);
+	}
+
+	[Route("osuauth")]
+	public async Task GetUserDataFromToken([FromQuery] string access_token)
+	{
+		_logger.LogInformation(access_token);
 	}
 
 	[HttpGet]

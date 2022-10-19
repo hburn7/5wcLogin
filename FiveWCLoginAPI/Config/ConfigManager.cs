@@ -10,6 +10,8 @@ public class ConfigManager : IConfigManager
 	public string DbUsername => _configuration["Database:Username"];
 	public string DbPassword => _configuration["Database:Password"];
 	public string DbName => _configuration["Database:Database"];
+	public int OsuClientId => int.Parse(_configuration["Osu:ClientId"]);
+	public string OsuClientSecret => _configuration["Osu:ClientSecret"];
 
 	public string GetConnectionString() =>
 		IsDocker
