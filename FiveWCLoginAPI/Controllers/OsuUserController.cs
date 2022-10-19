@@ -82,13 +82,13 @@ public class OsuUserController : ControllerBase
 			{ "client_secret", _config.OsuClientSecret },
 			{ "code", code },
 			{ "grant_type", "authorization_code" },
-			{ "redirect_uri", "https://auth.stagec.xyz/api/osu" }
+			{ "redirect_uri", "https://auth.stagec.xyz/api/osuauth" }
 		};
 
 		var content = new FormUrlEncodedContent(values);
 		var response = await client.PostAsync(TokenUrl, content);
 		var resString = await response.Content.ReadAsStringAsync();
-		_logger.LogInformation(resString);
+		// _logger.LogInformation(resString);
 	}
 
 	[Route("osuauth")]
