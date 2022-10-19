@@ -1,9 +1,6 @@
 using FiveWCLoginAPI.Config;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace FiveWCLoginAPI.Controllers;
 
@@ -13,20 +10,19 @@ public class OsuUserController : ControllerBase
 {
 	private const string BaseUrl = "https://osu.ppy.sh/api/v2/";
 	private const string TokenUrl = "https://osu.ppy.sh/oauth/token";
-	
-	private readonly ILogger<OsuUserController> _logger;
-	private readonly FiveWCDbContext _dbContext;
 	private readonly IConfigManager _config;
+	private readonly FiveWCDbContext _dbContext;
+	private readonly ILogger<OsuUserController> _logger;
 	private readonly IOsuService _osuService;
 
-	public OsuUserController(ILogger<OsuUserController> logger, FiveWCDbContext dbContext, IConfigManager config, IOsuService osuService)
+	public OsuUserController(ILogger<OsuUserController> logger, FiveWCDbContext dbContext, ConfigManager config, OsuService osuService)
 	{
 		_logger = logger;
 		_dbContext = dbContext;
 		_config = config;
 		_osuService = osuService;
 	}
-	
+
 	[HttpPost]
 	[Route("posttest")]
 	public async Task Post()
@@ -34,14 +30,14 @@ public class OsuUserController : ControllerBase
 		// Generates random data and inserts into the database
 		var random = new Random();
 		int osuId = random.Next();
-		ulong discordId = (ulong) Math.Abs(random.NextInt64());
+		ulong discordId = (ulong)Math.Abs(random.NextInt64());
 		var user = new OsuUser
 		{
 			OsuID = osuId,
 			DiscordID = discordId,
 			RegistrationDate = DateTime.UtcNow
 		};
-	
+
 		await _dbContext.Users.AddAsync(user);
 		await _dbContext.SaveChangesAsync();
 		_logger.LogInformation($"Added user {osuId},{discordId} to the database.");
@@ -61,13 +57,12 @@ public class OsuUserController : ControllerBase
 		await _dbContext.SaveChangesAsync();
 		_logger.LogInformation($"Added user {osuId},{discordId} to the database.");
 	}
-	
+
 	[HttpPost]
 	[Route("discord/{code}")]
 	public async Task PostDiscord(string code)
 	{
 		// Post discord information
-		
 	}
 
 	[Route("osu")]
@@ -81,10 +76,7 @@ public class OsuUserController : ControllerBase
 	}
 
 	[Route("osuauth")]
-	public async Task GetUserDataFromToken([FromQuery] string access_token)
-	{
-		_logger.LogInformation(access_token);
-	}
+	public async Task GetUserDataFromToken([FromQuery] string access_token) => _logger.LogInformation(access_token);
 
 	[HttpGet]
 	[Route("osu/{osuId}")]
