@@ -14,14 +14,12 @@ public class OsuUserController : ControllerBase
 	private readonly IConfigManager _config;
 	private readonly FiveWCDbContext _dbContext;
 	private readonly ILogger<OsuUserController> _logger;
-	private readonly IOsuService _osuService;
 
-	public OsuUserController(ILogger<OsuUserController> logger, FiveWCDbContext dbContext, ConfigManager config, OsuService osuService)
+	public OsuUserController(ILogger<OsuUserController> logger, FiveWCDbContext dbContext, ConfigManager config)
 	{
 		_logger = logger;
 		_dbContext = dbContext;
 		_config = config;
-		_osuService = osuService;
 	}
 
 	[HttpPost]
@@ -69,11 +67,11 @@ public class OsuUserController : ControllerBase
 	[Route("osu")]
 	public async Task GetTokenFromCode([FromQuery] string code)
 	{
-		_logger.LogInformation($"Authorized user. Code received: {code}");
-		var token = await _osuService.ResolveTokenAsync(code);
-		var user = await _osuService.ResolveUserAsync();
-		_logger.LogInformation(token.AccessToken);
-		_logger.LogInformation(user.Id.ToString());
+		// _logger.LogInformation($"Authorized user. Code received: {code}");
+		// var token = await _osuService.ResolveTokenAsync(code);
+		// var user = await _osuService.ResolveUserAsync();
+		// _logger.LogInformation(token.AccessToken);
+		// _logger.LogInformation(user.Id.ToString());
 	}
 
 	[Route("osuauth")]
