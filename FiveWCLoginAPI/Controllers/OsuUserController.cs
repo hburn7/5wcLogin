@@ -1,6 +1,7 @@
 using FiveWCLoginAPI.Config;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace FiveWCLoginAPI.Controllers;
 
@@ -93,5 +94,12 @@ public class OsuUserController : ControllerBase
 	{
 		var match = await _dbContext.Users.FirstOrDefaultAsync(x => x.DiscordID == discordId);
 		return match;
+	}
+
+	[HttpGet]
+	[Route("ping")]
+	public async Task<HttpStatusCode> GetPing()
+	{
+		return HttpStatusCode.OK;
 	}
 }
