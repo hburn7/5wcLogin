@@ -10,7 +10,7 @@ public class OsuService : IOsuService
 	private readonly IOsuClient _client;
 	private const string authUri = "https://auth.stagec.xyz/api/osuauth";
 
-	public OsuService(OsuClient client, ConfigManager config)
+	public OsuService(IOsuClient client, ConfigManager config)
 	{
 		_client = client;
 		_client.Configuration.ClientId = config.OsuClientId;

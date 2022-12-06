@@ -17,7 +17,7 @@ public class OsuUserController : ControllerBase
 	private readonly ILogger<OsuUserController> _logger;
 
 	public OsuUserController(ILogger<OsuUserController> logger, 
-		FiveWCDbContext dbContext, ConfigManager config, OsuService osuService)
+		FiveWCDbContext dbContext, ConfigManager config, IOsuService osuService)
 	{
 		_logger = logger;
 		_dbContext = dbContext;

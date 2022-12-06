@@ -3,7 +3,6 @@ using FiveWCLoginAPI.Config;
 using Microsoft.EntityFrameworkCore;
 using OsuSharp;
 using OsuSharp.Extensions;
-using OsuSharp.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +15,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<FiveWCDbContext>();
 builder.Services.AddSingleton<ConfigManager>();
-builder.Services.AddSingleton<OsuService>();
 builder.Services.AddLogging();
 
 builder.Host.ConfigureOsuSharp((ctx, options) =>
