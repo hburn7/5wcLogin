@@ -1,6 +1,7 @@
 using FiveWCLoginAPI.Config;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace FiveWCLoginAPI.Controllers;
 
@@ -11,11 +12,12 @@ public class OsuUserController : ControllerBase
 	private const string BaseUrl = "https://osu.ppy.sh/api/v2/";
 	private const string TokenUrl = "https://osu.ppy.sh/oauth/token";
 	private readonly IConfigManager _config;
+	private readonly IOsuService _osuService;
 	private readonly FiveWCDbContext _dbContext;
 	private readonly ILogger<OsuUserController> _logger;
-	private readonly IOsuService _osuService;
 
-	public OsuUserController(ILogger<OsuUserController> logger, FiveWCDbContext dbContext, ConfigManager config, OsuService osuService)
+	public OsuUserController(ILogger<OsuUserController> logger, 
+		FiveWCDbContext dbContext, ConfigManager config, OsuService osuService)
 	{
 		_logger = logger;
 		_dbContext = dbContext;
@@ -93,5 +95,12 @@ public class OsuUserController : ControllerBase
 	{
 		var match = await _dbContext.Users.FirstOrDefaultAsync(x => x.DiscordID == discordId);
 		return match;
+	}
+
+	[HttpGet]
+	[Route("ping")]
+	public async Task<HttpStatusCode> GetPing()
+	{
+		return HttpStatusCode.OK;
 	}
 }
