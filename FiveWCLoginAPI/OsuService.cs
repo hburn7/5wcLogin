@@ -8,7 +8,7 @@ namespace FiveWCLoginAPI;
 public class OsuService : IOsuService
 {
 	public IOsuClient Client { get; }
-	private const string authUri = "https://5wc.stagec.xyz/";
+	private const string authUri = "http://5wc.stagec.xyz/";
 
 	public OsuService(IOsuClient client, ConfigManager config)
 	{
