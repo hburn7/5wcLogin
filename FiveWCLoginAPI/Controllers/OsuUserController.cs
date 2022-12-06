@@ -72,6 +72,7 @@ public class OsuUserController : ControllerBase
 	{
 		_logger.LogInformation($"Authorized user. Code received: {code}");
 		var token = await _osuService.ResolveTokenAsync(code);
+		
 		var user = await _osuService.ResolveUserAsync();
 		_logger.LogInformation(token.AccessToken);
 		_logger.LogInformation(user.Id.ToString());

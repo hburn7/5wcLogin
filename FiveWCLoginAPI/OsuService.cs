@@ -7,16 +7,16 @@ namespace FiveWCLoginAPI;
 
 public class OsuService : IOsuService
 {
-	private readonly IOsuClient _client;
-	private const string authUri = "https://auth.stagec.xyz/api/osuauth";
+	public IOsuClient Client { get; }
+	private const string authUri = "https://5wc.stagec.xyz/";
 
 	public OsuService(IOsuClient client, ConfigManager config)
 	{
-		_client = client;
-		_client.Configuration.ClientId = config.OsuClientId;
-		_client.Configuration.ClientSecret = config.OsuClientSecret;
+		Client = client;
+		Client.Configuration.ClientId = config.OsuClientId;
+		Client.Configuration.ClientSecret = config.OsuClientSecret;
 	}
 
-	public async Task<IOsuToken> ResolveTokenAsync(string code) => await _client.GetAccessTokenFromCodeAsync(code, authUri);
-	public async Task<IGlobalUser> ResolveUserAsync() => await _client.GetCurrentUserAsync(GameMode.Osu);
+	public async Task<IOsuToken> ResolveTokenAsync(string code) => await Client.GetAccessTokenFromCodeAsync(code, authUri);
+	public async Task<IGlobalUser> ResolveUserAsync() => await Client.GetCurrentUserAsync(GameMode.Osu);
 }
