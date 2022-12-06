@@ -2,6 +2,7 @@ using FiveWCLoginAPI;
 using FiveWCLoginAPI.Config;
 using Microsoft.EntityFrameworkCore;
 using OsuSharp;
+using OsuSharp.Extensions;
 using OsuSharp.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,16 @@ builder.Services.AddSingleton<FiveWCDbContext>();
 builder.Services.AddSingleton<ConfigManager>();
 builder.Services.AddSingleton<OsuService>();
 builder.Services.AddLogging();
+
+builder.Host.ConfigureOsuSharp((ctx, options) =>
+       {
+	       options.Configuration = new OsuClientConfiguration
+	       {
+		       ClientId = int.Parse(ctx.Configuration["Osu:ClientID"]),
+		       ClientSecret = ctx.Configuration["Osu:ClientSecret"]
+	       };
+       })
+       .ConfigureServices((ctx, services) => services.AddSingleton<IOsuService, OsuService>());
 
 var app = builder.Build();
 
