@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<FiveWCDbContext>();
 builder.Services.AddSingleton<ConfigManager>();
-builder.Services.AddSingleton<IOsuService, OsuService>();
+builder.Services.AddSingleton<OsuService>();
 builder.Services.AddLogging();
 
 var app = builder.Build();
