@@ -22,8 +22,10 @@ public class OsuUserController : ControllerBase
 	[Route("register")]
 	public async Task<HttpResponseMessage> Register([FromQuery] string k, [FromBody]OsuRegistrant registrant)
 	{
+		_logger.LogInformation($"Attempting to register user {registrant} with key {k}.");
 		if (!await VerifyApiKeyAsync(k))
 		{
+			_logger.LogWarning($"Key verification failed for {k}");
 			return new HttpResponseMessage(HttpStatusCode.Unauthorized);
 		}
 		
