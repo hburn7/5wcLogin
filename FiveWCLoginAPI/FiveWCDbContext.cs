@@ -9,22 +9,23 @@ public class FiveWCDbContext : DbContext
 
 	public FiveWCDbContext(ConfigManager config) { _config = config; }
 	
-	public DbSet<OsuUser> Users { get; set; } = null!;
+	public DbSet<OsuRegistrant> Registrants { get; set; } = null!;
+	public DbSet<AuthorizedUser> AuthorizedUsers { get; set; } = null!;
 
 	protected override void OnConfiguring(DbContextOptionsBuilder builder) => 
 		builder.UseNpgsql(_config.GetConnectionString());
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-		modelBuilder.Entity<OsuUser>()
+		modelBuilder.Entity<OsuRegistrant>()
 		            .Property(x => x.OsuID)
 		            .IsRequired();
 		
-		modelBuilder.Entity<OsuUser>()
+		modelBuilder.Entity<OsuRegistrant>()
 		            .Property(x => x.DiscordID)
 		            .IsRequired();
 		
-		modelBuilder.Entity<OsuUser>()
+		modelBuilder.Entity<OsuRegistrant>()
 		            .Property(x => x.RegistrationDate)
 		            .IsRequired();
 	}

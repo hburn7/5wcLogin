@@ -1,8 +1,6 @@
 using FiveWCLoginAPI;
 using FiveWCLoginAPI.Config;
 using Microsoft.EntityFrameworkCore;
-using OsuSharp;
-using OsuSharp.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

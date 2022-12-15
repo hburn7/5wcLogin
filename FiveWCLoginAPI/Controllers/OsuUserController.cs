@@ -1,6 +1,6 @@
-using FiveWCLoginAPI.Config;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Net;
 
 namespace FiveWCLoginAPI.Controllers;
@@ -19,29 +19,50 @@ public class OsuUserController : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task Post(string discordId, string discordDisplay, string osuId, string osuDisplay)
+	[Route("register")]
+	public async Task<HttpResponseMessage> Register([FromQuery] string k, [FromBody]OsuRegistrant registrant)
 	{
-		var user = new OsuUser
+		if (!await VerifyApiKeyAsync(k))
 		{
-			OsuID = osuId,
-			OsuDisplayName = osuDisplay,
-			DiscordID = discordId,
-			DiscordDisplayName = discordDisplay,
-			RegistrationDate = DateTime.UtcNow
-		};
+			return new HttpResponseMessage(HttpStatusCode.Unauthorized);
+		}
+		
+		var userExists = await _dbContext.Registrants.AnyAsync(x => x.OsuID == registrant.OsuID);
+		if (userExists)
+		{
+			_logger.LogInformation($"User {registrant.OsuID} already exists in the database.");
+			return new HttpResponseMessage(HttpStatusCode.Conflict);
+		}
 
-		await _dbContext.Users.AddAsync(user);
+		registrant.RegistrationDate = DateTime.UtcNow;
+
+		_logger.LogInformation($"Adding user {registrant.OsuID} to the database.");
+		await _dbContext.Registrants.AddAsync(registrant);
 		await _dbContext.SaveChangesAsync();
-		_logger.LogInformation($"Added {user} to the database.");
+		
+		return new HttpResponseMessage(HttpStatusCode.OK);
 	}
 
 	[HttpGet]
-	[Route("osu/{osuId}")]
-	public async Task<OsuUser?> Get(string osuID)
+	[Route("osu")]
+	public async Task<string> Get([FromQuery] string k, [FromQuery] string osuId)
 	{
+		if (!await VerifyApiKeyAsync(k))
+		{
+			return new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString();
+		}
+		
 		// call the database and return a user
-		return await _dbContext.Users.FirstOrDefaultAsync(x => x.OsuID == osuID);
+		var result = await _dbContext.Registrants.FirstOrDefaultAsync(x => x.OsuID == osuId);
+		if (result != null)
+		{
+			return JsonConvert.SerializeObject(result);
+		}
+
+		return "{}";
 	}
+
+	private async Task<bool> VerifyApiKeyAsync(string key) => await _dbContext.AuthorizedUsers.AnyAsync(x => x.ApiKey == key);
 
 	[HttpGet]
 	[Route("ping")]

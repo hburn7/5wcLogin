@@ -17,8 +17,4 @@ public class ConfigManager : IConfigManager
 		IsDocker
 			? $"Server=db;Database={DbName};Port={DbPort};User id={DbUsername};Password={DbPassword}"
 			: $"Server={DbHost};Database={DbName};Port={DbPort};User id={DbUsername};Password={DbPassword}";
-	
-	// public string GetConnectionString() => IsDocker
-	// 	? $"postgresql://{DbUsername}:{DbPassword}@db/{DbName}"
-	// 	: $"postgresql://{DbUsername}:{DbPassword}@{DbHost}:{DbPort}/{DbName}";
 }

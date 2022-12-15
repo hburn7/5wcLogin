@@ -3,6 +3,7 @@ using System;
 using FiveWCLoginAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveWCLoginAPI.Migrations
 {
     [DbContext(typeof(FiveWCDbContext))]
-    partial class FiveWCDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221215030941_authorizeduser")]
+    partial class authorizeduser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
