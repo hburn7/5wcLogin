@@ -17,16 +17,6 @@ builder.Services.AddSingleton<FiveWCDbContext>();
 builder.Services.AddSingleton<ConfigManager>();
 builder.Services.AddLogging();
 
-builder.Host.ConfigureOsuSharp((ctx, options) =>
-       {
-	       options.Configuration = new OsuClientConfiguration
-	       {
-		       ClientId = int.Parse(ctx.Configuration["Osu:ClientID"]),
-		       ClientSecret = ctx.Configuration["Osu:ClientSecret"]
-	       };
-       })
-       .ConfigureServices((ctx, services) => services.AddSingleton<IOsuService, OsuService>());
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

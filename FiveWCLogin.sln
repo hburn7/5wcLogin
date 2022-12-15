@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiveWCLoginAPI", "FiveWCLoginAPI\FiveWCLoginAPI.csproj", "{61480493-36E1-4E19-B9AA-369E10A4DAB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiveWCLogin", "FiveWCLogin\FiveWCLogin.csproj", "{B183125A-9960-44C0-9342-F166EDAD0CDE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,9 +12,5 @@ Global
 		{61480493-36E1-4E19-B9AA-369E10A4DAB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61480493-36E1-4E19-B9AA-369E10A4DAB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61480493-36E1-4E19-B9AA-369E10A4DAB1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B183125A-9960-44C0-9342-F166EDAD0CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B183125A-9960-44C0-9342-F166EDAD0CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B183125A-9960-44C0-9342-F166EDAD0CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B183125A-9960-44C0-9342-F166EDAD0CDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

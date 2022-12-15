@@ -23,8 +23,3 @@ services:
       - POSTGRES_DB=five_wc_api
     volumes:
       - postgres-five_wc_api:/var/lib/postgresql/data
-
-networks:
-  default:
-    external:
-      name: five_wc_api_network
