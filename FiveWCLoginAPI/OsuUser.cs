@@ -17,4 +17,8 @@ public class OsuRegistrant
 	[JsonProperty("discord_username")]
 	public string DiscordDisplayName { get; set; }
 	public DateTime RegistrationDate { get; set; }
+	public override string ToString()
+	{
+		return $"OsuUser({OsuID}, {OsuDisplayName}, {DiscordID}, {DiscordDisplayName}, {RegistrationDate})";
+	}
 }
