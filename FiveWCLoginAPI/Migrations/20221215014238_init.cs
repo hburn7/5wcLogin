@@ -14,14 +14,17 @@ namespace FiveWCLoginAPI.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    OsuID = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    DiscordID = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    OsuID = table.Column<string>(type: "text", nullable: false),
+                    OsuDisplayName = table.Column<string>(type: "text", nullable: false),
+                    DiscordID = table.Column<string>(type: "text", nullable: false),
+                    DiscordDisplayName = table.Column<string>(type: "text", nullable: false),
                     RegistrationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.OsuID);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
         }
 

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveWCLoginAPI.Migrations
 {
     [DbContext(typeof(FiveWCDbContext))]
-    [Migration("20221002144052_init")]
+    [Migration("20221215014238_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,19 +26,32 @@ namespace FiveWCLoginAPI.Migrations
 
             modelBuilder.Entity("FiveWCLoginAPI.OsuUser", b =>
                 {
-                    b.Property<int>("OsuID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OsuID"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("DiscordID")
-                        .HasColumnType("numeric(20,0)");
+                    b.Property<string>("DiscordDisplayName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("DiscordID")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("OsuDisplayName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("OsuID")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("OsuID");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
