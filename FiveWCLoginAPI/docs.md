@@ -22,7 +22,9 @@
   "OsuDisplayName": "Test",
   "DiscordID": "987654321",
   "DiscordDisplayName": "Test#0000",
-  "RegistrationDate": "2022-12-15T23:12:16.145Z"
+  "RegistrationDate": "2022-12-15T23:12:16.145Z",
+  "OsuJson": "{...}"
+  ""
 }
 ```
 * If the user has not registered:
