@@ -64,6 +64,19 @@ public class OsuUserController : ControllerBase
 		return "{}";
 	}
 
+	[HttpGet]
+	[Route("osu/all")]
+	public async Task<string> GetAll([FromQuery] string k)
+	{
+		if (!await VerifyApiKeyAsync(k))
+		{
+			return new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString();
+		}
+		
+		var result = await _dbContext.Registrants.OrderBy(x => x.RegistrationDate).ToListAsync();
+		return result.Any() ? JsonConvert.SerializeObject(result) : "{}";
+	}
+
 	private async Task<bool> VerifyApiKeyAsync(string key) => await _dbContext.AuthorizedUsers.AnyAsync(x => x.ApiKey == key);
 
 	[HttpGet]
