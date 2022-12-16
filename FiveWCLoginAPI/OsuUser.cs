@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -17,6 +16,8 @@ public class OsuRegistrant
 	public string DiscordID { get; set; }
 	[JsonPropertyName("discord_username")]
 	public string DiscordDisplayName { get; set; }
+	[JsonPropertyName("osu_json")]
+	public string OsuJson { get; set; }
 	public DateTime RegistrationDate { get; set; }
 	public override string ToString()
 	{
