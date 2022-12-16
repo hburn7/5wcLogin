@@ -73,7 +73,9 @@ public class OsuUserController : ControllerBase
 			return new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString();
 		}
 		
-		var result = await _dbContext.Registrants.OrderBy(x => x.RegistrationDate).ToListAsync();
+		var result = await _dbContext.Registrants.OrderBy(x => x.RegistrationDate)
+		                             .Select(x => new Tuple<string, string, string>(x.OsuID, x.DiscordID, x.DiscordDisplayName))
+		                             .ToListAsync();
 		return result.Any() ? JsonConvert.SerializeObject(result) : "{}";
 	}
 
