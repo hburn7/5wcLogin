@@ -55,13 +55,10 @@ public class OsuUserController : ControllerBase
 		}
 		
 		// call the database and return a user
-		var result = await _dbContext.Registrants.FirstOrDefaultAsync(x => x.OsuID == osuId);
-		if (result != null)
-		{
-			return JsonConvert.SerializeObject(result);
-		}
-
-		return "{}";
+		var result = await _dbContext.Registrants
+		                             .AsNoTracking()
+		                             .FirstOrDefaultAsync(x => x.OsuID == osuId);
+		return result != null ? JsonConvert.SerializeObject(result) : "{}";
 	}
 
 	[HttpGet]
@@ -73,7 +70,10 @@ public class OsuUserController : ControllerBase
 			return new HttpResponseMessage(HttpStatusCode.Unauthorized).ToString();
 		}
 		
-		var result = await _dbContext.Registrants.OrderBy(x => x.RegistrationDate).ToListAsync();
+		var result = await _dbContext.Registrants
+		                             .AsNoTracking()
+		                             .OrderBy(x => x.RegistrationDate)
+		                             .ToListAsync();
 		return result.Any() ? JsonConvert.SerializeObject(result) : "{}";
 	}
 
