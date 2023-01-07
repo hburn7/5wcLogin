@@ -88,10 +88,10 @@ public class OsuUserController : ControllerBase
 	}
 
 	[HttpGet]
-	[Route("update")]
-	public async Task<string> UpdateExisting([FromQuery]string key)
+	[Route("osu/update")]
+	public async Task<string> UpdateExisting([FromQuery]string k)
 	{
-		if (!await VerifyApiKeyAsync(key))
+		if (!await VerifyApiKeyAsync(k))
 		{
 			return HttpStatusCode.Unauthorized.ToString();
 		}
