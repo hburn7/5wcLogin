@@ -73,10 +73,11 @@ public class OsuUserController : ControllerBase
 		var result = await _dbContext.Registrants
 		                             .AsNoTracking()
 		                             .OrderBy(x => x.RegistrationDate)
+		                             .Select(x => new ApiReturnUser(x))
 		                             .ToListAsync();
 		return result.Any() ? JsonConvert.SerializeObject(result) : "{}";
 	}
-
+	
 	private async Task<bool> VerifyApiKeyAsync(string key) => await _dbContext.AuthorizedUsers.AnyAsync(x => x.ApiKey == key);
 
 	[HttpGet]
@@ -84,5 +85,45 @@ public class OsuUserController : ControllerBase
 	public async Task<HttpStatusCode> GetPing()
 	{
 		return HttpStatusCode.OK;
+	}
+
+	[HttpGet]
+	[Route("update")]
+	public async Task<string> UpdateExisting([FromQuery]string key)
+	{
+		if (!await VerifyApiKeyAsync(key))
+		{
+			return HttpStatusCode.Unauthorized.ToString();
+		}
+		
+		var users = await _dbContext.Registrants
+		                            .Where(x => string.IsNullOrEmpty(x.Badges) || string.IsNullOrEmpty(x.CountryCode) || string.IsNullOrEmpty(x.OsuGlobalRank))
+		                            .ToListAsync();
+		
+		var erroredUpdates = new List<ApiReturnUser>();
+		
+		foreach (var user in users)
+		{
+			try
+			{
+				var dJson = JsonConvert.DeserializeObject<dynamic>(user.OsuJson);
+				user.Badges = dJson.badges.ToString();
+				user.CountryCode = dJson.country_code.ToString();
+				user.OsuGlobalRank = dJson.statistics_rulesets.osu.global_rank.ToString();
+				
+				_logger.LogInformation("Updated user {user} with badges {badges}, country code {countryCode}, and global rank {globalRank}.", 
+					user.OsuID, user.Badges, user.CountryCode, user.OsuGlobalRank);
+
+				_dbContext.Registrants.Update(user);
+			}
+			catch (Exception e)
+			{
+				_logger.LogWarning($"Failed to parse json dynamically for user {user}", e);
+				erroredUpdates.Add(new ApiReturnUser(user));
+			}
+		}
+		await _dbContext.SaveChangesAsync();
+
+		return JsonConvert.SerializeObject(erroredUpdates);
 	}
 }
